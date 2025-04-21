@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contratos - BTCMINET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .btc-orange {
+            color: #f7931a;
+        }
+        .btc-bg-orange {
+            background-color: #f7931a;
+        }
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .sidebar-hidden {
+            transform: translateX(100%);
+        }
+        .contract-card {
+            transition: all 0.2s ease;
+        }
+        .contract-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Mobile menu button -->
+        <button id="mobileMenuBtn" class="md:hidden fixed top-4 right-4 z-50 btc-bg-orange p-2 rounded-full">
+            <i class="fas fa-bars text-white"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar fixed md:relative inset-y-0 right-0 w-64 bg-black text-white p-4 md:transform-none sidebar-hidden md:block z-40">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-xl font-bold btc-orange">BTCMINET</h2>
+                <button id="closeSidebar" class="md:hidden">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <nav>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="dashboard.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="deposit.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-wallet mr-2"></i>
+                            <span>Depósito</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="withdraw.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-money-bill-wave mr-2"></i>
+                            <span>Retiro</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contracts.html" class="flex items-center p-2 rounded btc-bg-orange text-black">
+                            <i class="fas fa-file-contract mr-2"></i>
+                            <span>Contratos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="referrals.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-users mr-2"></i>
+                            <span>Referidos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faucet.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-faucet mr-2"></i>
+                            <span>Faucet</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faq.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-question-circle mr-2"></i>
+                            <span>Preguntas Frecuentes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-cog mr-2"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="index.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-1 overflow-auto">
+            <header class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-2xl font-bold">Contratos de Minería</h1>
+                </div>
+            </header>
+
+            <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <div class="px-4 py-6 sm:px-0">
+                    <!-- Current BTC Price -->
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-lg font-medium">Precio Actual de BTC</h2>
+                                <p class="text-sm text-gray-500">Última actualización: <span id="btcPriceTime">hace unos segundos</span></p>
+                            </div>
+                            <div class="text-2xl font-bold" id="btcPrice">$63,427.18</div>
+                        </div>
+                    </div>
+
+                    <!-- Contract Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-6">
+                        <!-- Contract Template -->
+                        <div class="contract-card bg-white rounded-lg shadow p-6">
+                            <h3 class="text-xl font-bold mb-2">Contrato $<span class="contract-amount">5</span></h3>
+                            <div class="text-sm text-gray-500 mb-2">
+                                <span class="contract-th">5</span> TH/s
+                                <span class="float-right btc-orange">$<span class="contract-daily">0.05</span>/día</span>
+                            </div>
+                            <div class="mb-4">
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span>Precio BTC:</span>
+                                    <span class="btc-orange contract-btc">0.00007892</span> BTC
+                                </div>
+                                <div class="progress-bar bg-gray-200 w-full">
+                                    <div class="progress-bar btc-bg-orange h-full contract-progress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <button class="w-full btc-bg-orange hover:bg-orange-600 text-black font-bold py-2 px-4 rounded contract-buy">
+                                Comprar
+                            </button>
+                        </div>
+
+                        <!-- Contracts will be generated dynamically by JavaScript -->
+                    </div>
+
+                    <!-- Contract Terms -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-lg font-medium mb-4">Términos del Contrato</h2>
+                        <ul class="list-disc pl-5 space-y-2 text-sm">
+                            <li>Los contratos ofrecen un retorno de inversión (ROI) distribuido en 100 días</li>
+                            <li>Los contratos comprados no caducan y continúan generando recompensas después del período de 100 días</li>
+                            <li>El valor en BTC se calcula según el precio actual del mercado</li>
+                            <li>Los retiros pueden realizarse en cualquier momento después de completar el período de 100 días</li>
+                        </ul>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Contract Purchase Modal -->
+    <div id="contractModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 max-w-md w-full">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold" id="modalTitle">Confirmar Compra</h3>
+                <button onclick="document.getElementById('contractModal').classList.add('hidden')" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-4">
+                <p>Estás a punto de comprar un contrato de <span class="font-bold" id="contractAmount">$5</span></p>
+                <p class="text-sm text-gray-500">≈ <span class="btc-orange" id="modalBtcValue">0.00007892</span> BTC</p>
+            </div>
+            <div class="mb-4 bg-gray-50 p-4 rounded">
+                <p class="text-sm">Este contrato generará aproximadamente <span class="btc-orange" id="modalRoi">0.00011838 BTC</span> en 100 días</p>
+            </div>
+            <div class="flex space-x-4">
+                <button 
+                    onclick="document.getElementById('contractModal').classList.add('hidden')" 
+                    class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded"
+                >
+                    Cancelar
+                </button>
+                <button 
+                    id="confirmPurchase" 
+                    class="flex-1 btc-bg-orange hover:bg-orange-600 text-black font-bold py-2 px-4 rounded"
+                >
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-hidden');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.add('sidebar-hidden');
+        });
+
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', () => {
+            const wallet = localStorage.getItem('btcminet_wallet');
+            if(!wallet) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Update BTC prices based on current rate
+            updateBtcPrices();
+
+            // Simulate some contract progress
+            simulateContractProgress();
+        });
+
+        // Contract specifications (1 TH/s = $0.01/day)
+        const CONTRACTS = [
+            { amount: 5, th: 5, daily: 0.05 },
+            { amount: 10, th: 10, daily: 0.10 },
+            { amount: 25, th: 25, daily: 0.25 },
+            { amount: 50, th: 50, daily: 0.50 },
+            { amount: 100, th: 100, daily: 1.00 },
+            { amount: 500, th: 550, daily: 5.50, bonus: "50 TH/s" },
+            { amount: 1000, th: 1150, daily: 11.50, bonus: "150 TH/s" },
+            { amount: 2500, th: 3000, daily: 30.00, bonus: "500 TH/s" },
+            { amount: 5000, th: 6250, daily: 62.50, bonus: "1250 TH/s" },
+            { amount: 10000, th: 13000, daily: 130.00, bonus: "3000 TH/s" },
+            { amount: 25000, th: 33000, daily: 330.00, bonus: "8000 TH/s" },
+            { amount: 50000, th: 70000, daily: 700.00, bonus: "20000 TH/s" }
+        ];
+
+        // Get real-time BTC price
+        async function getBtcPrice() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+                const data = await response.json();
+                return data.bitcoin.usd;
+            } catch (error) {
+                console.error('Error fetching BTC price:', error);
+                return 63427.18; // Fallback price
+            }
+        }
+
+        // Update BTC prices and contracts
+        async function updateBtcPrices() {
+            const btcPrice = await getBtcPrice();
+            document.getElementById('btcPrice').textContent = `$${btcPrice.toLocaleString('en-US', {maximumFractionDigits: 2})}`;
+            
+            // Update timestamp
+            const now = new Date();
+            document.getElementById('btcPriceTime').textContent = now.toLocaleTimeString();
+
+            // Generate contract cards
+            const container = document.querySelector('.grid');
+            container.innerHTML = '';
+
+CONTRACTS.forEach(contract => {
+                const btcValue = (contract.amount / btcPrice).toFixed(8);
+                const apr = ((contract.daily * 365) / contract.amount) * 100;
+                const aprFormatted = apr.toFixed(2);
+                const card = document.createElement('div');
+                card.className = 'contract-card bg-white rounded-lg shadow p-6';
+                card.innerHTML = `
+                    <h3 class="text-xl font-bold mb-2">Contrato $${contract.amount.toLocaleString()}</h3>
+                    <div class="text-sm text-gray-500 mb-2">
+                        <span>${contract.th} TH/s</span>
+                        ${contract.bonus ? `<span class="text-green-500 ml-2">BONUS: +${contract.bonus}</span>` : ''}
+                        <span class="float-right btc-orange">APR: ${aprFormatted}%</span>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span>Precio BTC:</span>
+                            <span class="btc-orange">${btcValue} BTC</span>
+                        </div>
+                        <div class="progress-bar bg-gray-200 w-full">
+                            <div class="progress-bar btc-bg-orange h-full" style="width: ${Math.floor(Math.random() * 100)}%"></div>
+                        </div>
+                    </div>
+                    <button class="w-full btc-bg-orange hover:bg-orange-600 text-black font-bold py-2 px-4 rounded" onclick="showContractModal(${contract.amount})">
+                        Comprar
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Show contract purchase modal
+        function showContractModal(amount) {
+            const modal = document.getElementById('contractModal');
+            const btcValue = (amount / 63427.18).toFixed(8);
+            const roi = (amount * 1.5 / 63427.18).toFixed(8); // 1.5x ROI
+
+            document.getElementById('contractAmount').textContent = `$${amount}`;
+            document.getElementById('modalBtcValue').textContent = btcValue;
+            document.getElementById('modalRoi').textContent = `${roi} BTC`;
+            modal.classList.remove('hidden');
+
+            // Set up confirmation button
+            document.getElementById('confirmPurchase').onclick = function() {
+                purchaseContract(amount, btcValue);
+            };
+        }
+
+        // Simulate contract purchase
+        function purchaseContract(amount, btcValue) {
+            const btn = document.getElementById('confirmPurchase');
+            const originalText = btn.textContent;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Procesando...';
+
+            // Simulate API call
+            setTimeout(() => {
+                document.getElementById('contractModal').classList.add('hidden');
+                alert(`Contrato de $${amount} comprado exitosamente por ${btcValue} BTC`);
+                
+                // Add points proportional to contract amount
+                let currentPoints = parseInt(localStorage.getItem('btcminet_points')) || 0;
+                currentPoints += amount; // 1 point per $1
+                localStorage.setItem('btcminet_points', currentPoints);
+
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }, 1500);
+        }
+
+        // Simulate some contract progress (for demo purposes)
+        function simulateContractProgress() {
+            // Progress is now handled in the dynamic card generation
+        }
+
+        // Update BTC price every minute
+        setInterval(updateBtcPrices, 60000);
+    </script>
+</body>
+</html>
