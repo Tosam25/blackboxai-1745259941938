@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retiro - BTCMINET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .btc-orange {
+            color: #f7931a;
+        }
+        .btc-bg-orange {
+            background-color: #f7931a;
+        }
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .sidebar-hidden {
+            transform: translateX(100%);
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Mobile menu button -->
+        <button id="mobileMenuBtn" class="md:hidden fixed top-4 right-4 z-50 btc-bg-orange p-2 rounded-full">
+            <i class="fas fa-bars text-white"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar fixed md:relative inset-y-0 right-0 w-64 bg-black text-white p-4 md:transform-none sidebar-hidden md:block z-40">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-xl font-bold btc-orange">BTCMINET</h2>
+                <button id="closeSidebar" class="md:hidden">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <nav>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="dashboard.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="deposit.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-wallet mr-2"></i>
+                            <span>Depósito</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="withdraw.html" class="flex items-center p-2 rounded btc-bg-orange text-black">
+                            <i class="fas fa-money-bill-wave mr-2"></i>
+                            <span>Retiro</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contracts.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-file-contract mr-2"></i>
+                            <span>Contratos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="referrals.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-users mr-2"></i>
+                            <span>Referidos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faucet.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-faucet mr-2"></i>
+                            <span>Faucet</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faq.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-question-circle mr-2"></i>
+                            <span>Preguntas Frecuentes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-cog mr-2"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="index.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-1 overflow-auto">
+            <header class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-2xl font-bold">Retiro</h1>
+                </div>
+            </header>
+
+            <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <div class="px-4 py-6 sm:px-0">
+                    <!-- Withdrawal Form -->
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-lg font-medium mb-4">Solicitar Retiro</h2>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Wallet de Retiro</label>
+                            <div class="flex items-center">
+                                <div class="flex-1 truncate font-mono bg-gray-100 p-2 rounded" id="withdrawalWallet">bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq</div>
+                                <button class="ml-2 p-2 text-gray-500 hover:text-gray-700" disabled title="No se puede cambiar la wallet">
+                                    <i class="fas fa-lock"></i>
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Los retiros solo se pueden realizar a esta wallet</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Monto a Retirar (BTC)</label>
+                            <input 
+                                type="number" 
+                                id="withdrawalAmount" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500" 
+                                placeholder="0.00000000"
+                                step="0.00000001"
+                                min="0.00000040"
+                            >
+                            <p class="text-xs text-gray-500 mt-1">Disponible para retirar: <span id="availableBalance" class="btc-orange">0.00006000 BTC</span></p>
+                        </div>
+
+                        <div class="mb-4 bg-gray-50 p-4 rounded">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">Comisión GAS:</span>
+                                <span class="text-sm font-mono" id="gasFee">0.00000003 BTC</span>
+                            </div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">Recibirás:</span>
+                                <span class="text-sm font-mono btc-orange" id="receiveAmount">0.00000000 BTC</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm font-medium text-gray-700">Retiro Mínimo:</span>
+                                <span class="text-sm font-mono">0.00000040 BTC</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4" id="warningBox" style="display: none;">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-exclamation-circle text-yellow-400"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-yellow-700" id="warningText"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button 
+                            id="submitWithdrawal" 
+                            class="w-full btc-bg-orange hover:bg-orange-600 text-black font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center disabled:opacity-50"
+                            disabled
+                        >
+                            <span id="btnText">Confirmar Retiro</span>
+                            <span id="loadingSpinner" class="ml-2 hidden">
+                                <i class="fas fa-circle-notch fa-spin"></i>
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Withdrawal History -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-lg font-medium mb-4">Historial de Retiros</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comisión</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-11-12 10:45</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm btc-orange">0.00010000 BTC</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0.00000003 BTC</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">Completado</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-11-05 16:20</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm btc-orange">0.00005000 BTC</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0.00000003 BTC</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">Completado</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import blockchain functions
+        import {
+            getBalance,
+            formatBTC,
+            MIN_WITHDRAWAL,
+            GAS_FEE
+        } from './blockchain.js';
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-hidden');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.add('sidebar-hidden');
+        });
+
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', async () => {
+            const wallet = localStorage.getItem('btcminet_wallet');
+            if(!wallet) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('withdrawalWallet').textContent = wallet;
+            
+            // Get real balance and transactions from blockchain
+            const { balance } = await getBalance(wallet);
+            const availableBalance = formatBTC(balance);
+            const txs = await getTransactions(wallet);
+            const deposits = filterDeposits(txs, wallet);
+            const withdrawals = filterWithdrawals(txs, wallet);
+
+            // Only show available balance if user has made deposits
+            const availableBalanceEl = document.getElementById('availableBalance');
+            if (deposits.length > 0) {
+                availableBalanceEl.textContent = availableBalance + ' BTC';
+            } else {
+                availableBalanceEl.textContent = 'Realiza un depósito primero';
+                availableBalanceEl.classList.remove('btc-orange');
+                availableBalanceEl.classList.add('text-gray-500');
+            }
+
+            // Hide withdrawal history if no withdrawals
+            const historyTable = document.querySelector('table');
+            if (withdrawals.length === 0) {
+                historyTable.parentElement.innerHTML = `
+                    <div class="text-center py-8">
+                        <i class="fas fa-history text-4xl text-gray-300 mb-2"></i>
+                        <p class="text-gray-500">No hay historial de retiros</p>
+                    </div>
+                `;
+            }
+
+            // Set up withdrawal amount validation
+            const withdrawalAmount = document.getElementById('withdrawalAmount');
+            const submitBtn = document.getElementById('submitWithdrawal');
+            const warningBox = document.getElementById('warningBox');
+            const warningText = document.getElementById('warningText');
+            
+            document.getElementById('gasFee').textContent = formatBTC(GAS_FEE) + ' BTC';
+
+            withdrawalAmount.addEventListener('input', () => {
+                const amount = parseFloat(withdrawalAmount.value) || 0;
+                const receiveAmount = amount - GAS_FEE;
+                document.getElementById('receiveAmount').textContent = formatBTC(receiveAmount) + ' BTC';
+
+                // Validate amount
+                if(amount <= 0) {
+                    warningBox.style.display = 'none';
+                    submitBtn.disabled = true;
+                    return;
+                }
+
+                if(amount < MIN_WITHDRAWAL) {
+                    warningBox.style.display = 'block';
+                    warningText.textContent = `El monto mínimo de retiro es ${formatBTC(MIN_WITHDRAWAL)} BTC`;
+                    submitBtn.disabled = true;
+                } 
+                else if(amount + GAS_FEE > availableBalance) {
+                    warningBox.style.display = 'block';
+                    warningText.textContent = 'Fondos insuficientes. Asegúrate de tener suficiente para cubrir el retiro + GAS';
+                    submitBtn.disabled = true;
+                }
+                else {
+                    warningBox.style.display = 'none';
+                    submitBtn.disabled = false;
+                }
+            });
+
+            // Handle withdrawal submission
+            submitBtn.addEventListener('click', async () => {
+                const amount = parseFloat(withdrawalAmount.value);
+                const btnText = document.getElementById('btnText');
+                const spinner = document.getElementById('loadingSpinner');
+
+                btnText.textContent = 'Procesando...';
+                spinner.classList.remove('hidden');
+                submitBtn.disabled = true;
+
+                try {
+                    if (amount > availableBalance) {
+                        throw new Error('Fondos insuficientes');
+                    }
+
+                    // In production, this would call a backend API to process withdrawal
+                    alert(`Retiro de ${formatBTC(amount)} BTC enviado para procesamiento`);
+                    
+                    // Update UI
+                    btnText.textContent = 'Confirmar Retiro';
+                    spinner.classList.add('hidden');
+                    submitBtn.disabled = false;
+                    withdrawalAmount.value = '';
+                    
+                    // Refresh balance
+                    const { balance: newBalance } = await getBalance(wallet);
+                    document.getElementById('availableBalance').textContent = formatBTC(newBalance) + ' BTC';
+                } catch (error) {
+                    alert(`Error: ${error.message}`);
+                    btnText.textContent = 'Confirmar Retiro';
+                    spinner.classList.add('hidden');
+                    submitBtn.disabled = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
