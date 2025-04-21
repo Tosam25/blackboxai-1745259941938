@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faucet - BTCMINET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .btc-orange {
+            color: #f7931a;
+        }
+        .btc-bg-orange {
+            background-color: #f7931a;
+        }
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .sidebar-hidden {
+            transform: translateX(100%);
+        }
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+        }
+        .captcha-box {
+            background-color: #f3f4f6;
+            border: 1px dashed #d1d5db;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Mobile menu button -->
+        <button id="mobileMenuBtn" class="md:hidden fixed top-4 right-4 z-50 btc-bg-orange p-2 rounded-full">
+            <i class="fas fa-bars text-white"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar fixed md:relative inset-y-0 right-0 w-64 bg-black text-white p-4 md:transform-none sidebar-hidden md:block z-40">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-xl font-bold btc-orange">BTCMINET</h2>
+                <button id="closeSidebar" class="md:hidden">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <nav>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="dashboard.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="deposit.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-wallet mr-2"></i>
+                            <span>Depósito</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="withdraw.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-money-bill-wave mr-2"></i>
+                            <span>Retiro</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contracts.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-file-contract mr-2"></i>
+                            <span>Contratos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="referrals.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-users mr-2"></i>
+                            <span>Referidos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faucet.html" class="flex items-center p-2 rounded btc-bg-orange text-black">
+                            <i class="fas fa-faucet mr-2"></i>
+                            <span>Faucet</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faq.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-question-circle mr-2"></i>
+                            <span>Preguntas Frecuentes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-cog mr-2"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="index.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-1 overflow-auto">
+            <header class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-2xl font-bold">Faucet BTC</h1>
+                </div>
+            </header>
+
+            <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <div class="px-4 py-6 sm:px-0">
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-lg font-medium mb-4">Reclama BTC Gratis</h2>
+
+                        <!-- User Level and Progress -->
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">Nivel Actual:</span>
+                                <span class="text-sm font-mono btc-orange" id="userLevel">1</span>
+                            </div>
+                            <div class="progress-bar bg-gray-200 w-full">
+                                <div class="progress-bar btc-bg-orange h-full" style="width: 0%" id="levelProgress"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">Recompensa Actual:</span>
+                                <span class="text-sm font-mono btc-orange" id="rewardAmount">0.00000010 BTC</span>
+                            </div>
+                            <div class="progress-bar bg-gray-200 w-full">
+                                <div class="progress-bar btc-bg-orange h-full" style="width: 0%" id="rewardProgress"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">Próximo reclamo disponible en:</span>
+                                <span class="text-sm font-mono" id="countdown">00:00:00</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-6 captcha-box p-4 rounded flex items-center justify-center" id="captchaContainer">
+                            <div class="text-center">
+                                <p class="text-sm text-gray-500 mb-2">Por favor verifica que no eres un robot</p>
+                                <div class="flex items-center justify-center">
+                                    <input type="checkbox" id="captchaCheck" class="mr-2">
+                                    <label for="captchaCheck" class="text-sm">No soy un robot</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button 
+                            id="claimBtn" 
+                            class="w-full btc-bg-orange hover:bg-orange-600 text-black font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center disabled:opacity-50"
+                            disabled
+                        >
+                            <span id="btnText">Reclamar Recompensa</span>
+                            <span id="loadingSpinner" class="ml-2 hidden">
+                                <i class="fas fa-circle-notch fa-spin"></i>
+                            </span>
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-lg font-medium mb-4">¿Cómo funciona el Faucet?</h2>
+                        <ul class="list-disc pl-5 space-y-2 text-sm">
+                            <li>Puedes reclamar una pequeña cantidad de BTC cada 24 horas</li>
+                            <li>La recompensa se deposita directamente en tu balance de BTCMINET</li>
+                            <li>El monto de la recompensa puede variar según la disponibilidad</li>
+                            <li>Se requiere verificación humana para prevenir abusos</li>
+                        </ul>
+                        <p class="mt-4 text-sm font-semibold text-gray-600">🏷️ Función de cupones disponible próximamente</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-hidden');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.add('sidebar-hidden');
+        });
+
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', () => {
+            const wallet = localStorage.getItem('btcminet_wallet');
+            if(!wallet) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Initialize faucet
+            initFaucet();
+        });
+
+        // Points and levels system
+        const LEVELS = [
+            { level: 1, minPoints: 0, maxPoints: 99 },
+            { level: 2, minPoints: 100, maxPoints: 199 },
+            { level: 3, minPoints: 200, maxPoints: 399 },
+            { level: 4, minPoints: 400, maxPoints: 699 },
+            { level: 5, minPoints: 700, maxPoints: Infinity }
+        ];
+
+        function getUserPoints() {
+            return parseInt(localStorage.getItem('btcminet_points')) || 0;
+        }
+
+        function setUserPoints(points) {
+            localStorage.setItem('btcminet_points', points);
+        }
+
+        function getUserLevel() {
+            const points = getUserPoints();
+            for (const lvl of LEVELS) {
+                if (points >= lvl.minPoints && points <= lvl.maxPoints) {
+                    return lvl.level;
+                }
+            }
+            return 1;
+        }
+
+        function getNextLevelPoints() {
+            const currentLevel = getUserLevel();
+            const nextLevel = LEVELS.find(lvl => lvl.level === currentLevel + 1);
+            return nextLevel ? nextLevel.minPoints : null;
+        }
+
+        function updateLevelProgress() {
+            const points = getUserPoints();
+            const currentLevel = getUserLevel();
+            const nextLevelPoints = getNextLevelPoints();
+
+            const levelProgressBar = document.getElementById('levelProgress');
+            const userLevelSpan = document.getElementById('userLevel');
+
+            userLevelSpan.textContent = currentLevel;
+
+            if (nextLevelPoints) {
+                const progressPercent = ((points - LEVELS[currentLevel - 1].minPoints) / (nextLevelPoints - LEVELS[currentLevel - 1].minPoints)) * 100;
+                levelProgressBar.style.width = `${progressPercent}%`;
+            } else {
+                levelProgressBar.style.width = '100%';
+            }
+        }
+
+        function calculateReward() {
+            const baseReward = 0.00000010;
+            const level = getUserLevel();
+            return baseReward * level;
+        }
+
+        function updateRewardDisplay() {
+            const rewardAmountSpan = document.getElementById('rewardAmount');
+            const reward = calculateReward();
+            rewardAmountSpan.textContent = reward.toFixed(8) + ' BTC';
+        }
+
+        function initFaucet() {
+            const claimBtn = document.getElementById('claimBtn');
+            const captchaCheck = document.getElementById('captchaCheck');
+            const lastClaimTime = localStorage.getItem('btcminet_lastClaimTime');
+            const cooldown = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+            const now = new Date().getTime();
+            const nextAvailable = lastClaimTime ? parseInt(lastClaimTime) + cooldown : 0;
+            const remainingTime = Math.max(0, nextAvailable - now);
+
+            updateLevelProgress();
+            updateRewardDisplay();
+
+            // Set up countdown timer
+            if (remainingTime > 0) {
+                startCountdown(remainingTime);
+            } else {
+                document.getElementById('countdown').textContent = '¡Listo para reclamar!';
+                claimBtn.disabled = false;
+            }
+
+            // Set up captcha verification
+            captchaCheck.addEventListener('change', function() {
+                claimBtn.disabled = !this.checked || remainingTime > 0;
+            });
+
+            // Set up claim button
+            claimBtn.addEventListener('click', function() {
+                if (!captchaCheck.checked) return;
+
+                const btnText = document.getElementById('btnText');
+                const spinner = document.getElementById('loadingSpinner');
+
+                btnText.textContent = 'Procesando...';
+                spinner.classList.remove('hidden');
+                claimBtn.disabled = true;
+
+                // Simulate API call
+                setTimeout(() => {
+                    // Save claim time
+                    localStorage.setItem('btcminet_lastClaimTime', now.toString());
+
+                    // Show success message
+                    alert(`¡Has reclamado exitosamente ${calculateReward().toFixed(8)} BTC!`);
+
+                    // Reset UI
+                    btnText.textContent = 'Reclamar Recompensa';
+                    spinner.classList.add('hidden');
+                    captchaCheck.checked = false;
+                    claimBtn.disabled = true;
+
+                    // Start countdown
+                    startCountdown(cooldown);
+                }, 2000);
+            });
+        }
+
+        function startCountdown(duration) {
+            const countdownElement = document.getElementById('countdown');
+            const claimBtn = document.getElementById('claimBtn');
+            const captchaCheck = document.getElementById('captchaCheck');
+            const progressBar = document.getElementById('rewardProgress');
+
+            let timer = duration;
+            const interval = setInterval(function() {
+                const hours = Math.floor(timer / (1000 * 60 * 60));
+                const minutes = Math.floor((timer % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timer % (1000 * 60)) / 1000);
+
+                countdownElement.textContent =
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                // Update progress bar
+                const progress = 100 - (timer / (24 * 60 * 60 * 1000) * 100);
+                progressBar.style.width = `${progress}%`;
+
+                timer -= 1000;
+
+                if (timer < 0) {
+                    clearInterval(interval);
+                    countdownElement.textContent = '¡Listo para reclamar!';
+                    claimBtn.disabled = !captchaCheck.checked;
+                    progressBar.style.width = '100%';
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
