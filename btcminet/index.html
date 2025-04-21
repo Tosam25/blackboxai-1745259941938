@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTCMINET - Minería en la Nube de Bitcoin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .btc-spin {
+            animation: spin 4s linear infinite;
+        }
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #111;
+            color: white;
+        }
+        .btc-orange {
+            color: #f7931a;
+        }
+        .btc-bg-orange {
+            background-color: #f7931a;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <div class="flex-grow flex items-center justify-center p-4">
+        <div class="w-full max-w-md bg-black p-8 rounded-lg border border-gray-800 shadow-lg">
+            <div class="text-center mb-8">
+                <i class="fab fa-bitcoin btc-spin text-6xl mb-4 btc-orange"></i>
+                <h1 class="text-3xl font-bold mb-2">BTCMINET</h1>
+                <p class="text-gray-400">Plataforma de Minería en la Nube de Bitcoin</p>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-400 mb-2">Dirección de Wallet BTC</label>
+                <input 
+                    type="text" 
+                    id="walletInput"
+                    class="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    placeholder="bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq"
+                >
+                <p class="text-xs text-gray-500 mt-1">Usaremos esta wallet para tus retiros</p>
+            </div>
+
+            <button 
+                id="loginBtn"
+                class="w-full btc-bg-orange hover:bg-orange-600 text-black font-bold py-3 px-4 rounded transition duration-200 flex items-center justify-center"
+            >
+                <span id="btnText">Registrarse / Iniciar Sesión</span>
+                <span id="loadingSpinner" class="ml-2 hidden">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                </span>
+            </button>
+
+            <div class="mt-6 text-center text-gray-400 text-sm">
+                <p>Al registrarte aceptas nuestros Términos y Condiciones</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const wallet = document.getElementById('walletInput').value;
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('loadingSpinner');
+            
+            // Basic validation
+            if(!wallet || wallet.length < 25) {
+                alert('Por favor ingresa una dirección de wallet BTC válida');
+                return;
+            }
+
+            // Show loading state
+            btnText.textContent = 'Verificando...';
+            spinner.classList.remove('hidden');
+
+            // Simulate API call
+            setTimeout(() => {
+                // Store wallet in localStorage
+                localStorage.setItem('btcminet_wallet', wallet);
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        });
+
+        // Check for existing wallet
+        const savedWallet = localStorage.getItem('btcminet_wallet');
+        if(savedWallet) {
+            document.getElementById('walletInput').value = savedWallet;
+        }
+    </script>
+</body>
+</html>
