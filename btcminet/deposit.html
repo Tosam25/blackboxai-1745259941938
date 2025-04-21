@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depósito - BTCMINET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .btc-orange {
+            color: #f7931a;
+        }
+        .btc-bg-orange {
+            background-color: #f7931a;
+        }
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .sidebar-hidden {
+            transform: translateX(100%);
+        }
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            background-color: white;
+            padding: 10px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Mobile menu button -->
+        <button id="mobileMenuBtn" class="md:hidden fixed top-4 right-4 z-50 btc-bg-orange p-2 rounded-full">
+            <i class="fas fa-bars text-white"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar fixed md:relative inset-y-0 right-0 w-64 bg-black text-white p-4 md:transform-none sidebar-hidden md:block z-40">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-xl font-bold btc-orange">BTCMINET</h2>
+                <button id="closeSidebar" class="md:hidden">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <nav>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="dashboard.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="deposit.html" class="flex items-center p-2 rounded btc-bg-orange text-black">
+                            <i class="fas fa-wallet mr-2"></i>
+                            <span>Depósito</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="withdraw.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-money-bill-wave mr-2"></i>
+                            <span>Retiro</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contracts.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-file-contract mr-2"></i>
+                            <span>Contratos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="referrals.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-users mr-2"></i>
+                            <span>Referidos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faucet.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-faucet mr-2"></i>
+                            <span>Faucet</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faq.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-question-circle mr-2"></i>
+                            <span>Preguntas Frecuentes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-cog mr-2"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="index.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-1 overflow-auto">
+            <header class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-2xl font-bold">Depósito</h1>
+                </div>
+            </header>
+
+            <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <div class="px-4 py-6 sm:px-0">
+                    <!-- Deposit Address -->
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-lg font-medium mb-4">Tu Dirección de Depósito</h2>
+                        <p class="text-sm text-gray-500 mb-4">Envía BTC a esta dirección. Los depósitos se reflejarán automáticamente en tu balance.</p>
+                        
+                        <div class="qr-code mb-4">
+                            <!-- Placeholder for QR code -->
+                            <div class="w-full h-full flex items-center justify-center bg-white">
+                                <i class="fas fa-qrcode text-6xl text-gray-300"></i>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-center mb-4">
+                            <div class="flex-1 truncate text-center font-mono" id="depositAddress">3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5</div>
+                            <button id="copyDeposit" class="ml-2 btc-bg-orange text-white p-2 rounded">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="fas fa-exclamation-circle text-yellow-400"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm text-yellow-700">
+                                        <strong>Depósito Mínimo: 0.000060 BTC (≈5 USD)</strong>. Depósitos menores no serán acreditados. RED: BTC
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deposit History -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-lg font-medium mb-4">Historial de Depósitos</h2>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Confirmaciones</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-11-15 14:32</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm btc-orange">0.00012000 BTC</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">6/6</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">Completado</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-11-10 09:15</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm btc-orange">0.00008000 BTC</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">6/6</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">Completado</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-11-05 18:42</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm btc-orange">0.00006000 BTC</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">6/6</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">Completado</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import blockchain functions
+        import {
+            getTransactions,
+            filterDeposits,
+            formatBTC,
+            MIN_DEPOSIT
+        } from './blockchain.js';
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-hidden');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.add('sidebar-hidden');
+        });
+
+        // Copy deposit address
+        document.getElementById('copyDeposit').addEventListener('click', () => {
+            const address = document.getElementById('depositAddress').textContent;
+            navigator.clipboard.writeText(address).then(() => {
+                alert('Dirección de depósito copiada al portapapeles');
+            });
+        });
+
+        // Generate deposit address (would come from backend in real app)
+        function generateDepositAddress(wallet) {
+            // In production, this would call an API to generate a unique deposit address
+            return wallet; // Using wallet as deposit address for demo
+        }
+
+        // Update deposit history with real transactions
+        async function updateDepositHistory(wallet) {
+            const historyTable = document.querySelector('tbody');
+            historyTable.innerHTML = ''; // Clear existing rows
+            
+            const transactions = await getTransactions(wallet);
+            const deposits = filterDeposits(transactions, wallet);
+            
+            if (deposits.length === 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.innerHTML = `
+                    <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
+                        No hay depósitos confirmados
+                    </td>
+                `;
+                historyTable.appendChild(emptyRow);
+                return;
+            }
+
+            deposits.forEach(tx => {
+                const output = tx.outputs.find(o => o.addresses.includes(wallet));
+                const amount = output ? formatBTC(output.value / 1e8) : 0;
+                
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${new Date(tx.received).toLocaleString()}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm btc-orange">
+                        ${amount} BTC
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${tx.confirmations}/6
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">
+                        ${tx.confirmations >= 6 ? 'Completado' : 'Pendiente'}
+                    </td>
+                `;
+                historyTable.appendChild(newRow);
+            });
+        }
+
+        // Check for new deposits periodically
+        function startDepositPolling(wallet) {
+            updateDepositHistory(wallet);
+            setInterval(() => updateDepositHistory(wallet), 30000); // Check every 30 seconds
+        }
+
+        // Check authentication and initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            const wallet = localStorage.getItem('btcminet_wallet');
+            if(!wallet) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Generate deposit address and start polling
+            const depositAddress = generateDepositAddress(wallet);
+            document.getElementById('depositAddress').textContent = depositAddress;
+            startDepositPolling(wallet);
+        });
+    </script>
+</body>
+</html>
