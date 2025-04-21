@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración - BTCMINET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .btc-orange {
+            color: #f7931a;
+        }
+        .btc-bg-orange {
+            background-color: #f7931a;
+        }
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .sidebar-hidden {
+            transform: translateX(100%);
+        }
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #f7931a;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #f7931a;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Mobile menu button -->
+        <button id="mobileMenuBtn" class="md:hidden fixed top-4 right-4 z-50 btc-bg-orange p-2 rounded-full">
+            <i class="fas fa-bars text-white"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar fixed md:relative inset-y-0 right-0 w-64 bg-black text-white p-4 md:transform-none sidebar-hidden md:block z-40">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-xl font-bold btc-orange">BTCMINET</h2>
+                <button id="closeSidebar" class="md:hidden">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <nav>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="dashboard.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="deposit.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-wallet mr-2"></i>
+                            <span>Depósito</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="withdraw.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-money-bill-wave mr-2"></i>
+                            <span>Retiro</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contracts.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-file-contract mr-2"></i>
+                            <span>Contratos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="referrals.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-users mr-2"></i>
+                            <span>Referidos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faucet.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-faucet mr-2"></i>
+                            <span>Faucet</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faq.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-question-circle mr-2"></i>
+                            <span>Preguntas Frecuentes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html" class="flex items-center p-2 rounded btc-bg-orange text-black">
+                            <i class="fas fa-cog mr-2"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="index.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-1 overflow-auto">
+            <header class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-2xl font-bold">Configuración</h1>
+                </div>
+            </header>
+
+            <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <div class="px-4 py-6 sm:px-0">
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-lg font-medium mb-4">Preferencias de Apariencia</h2>
+                        
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-sm font-medium">Modo Oscuro</h3>
+                                    <p class="text-xs text-gray-500">Cambia entre tema claro y oscuro</p>
+                                </div>
+                                <div class="relative inline-block w-10 mr-2 align-middle select-none">
+                                    <input type="checkbox" id="darkModeToggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                    <label for="darkModeToggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Idioma</label>
+                            <select id="languageSelect" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-orange-500">
+                                <option value="es" selected>Español</option>
+                                <option value="en">English</option>
+                                <option value="pt">Português</option>
+                                <option value="fr">Français</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6 mb-6">
+                        <h2 class="text-lg font-medium mb-4">Configuración de Seguridad</h2>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tu Wallet BTC</label>
+                            <div class="flex items-center">
+                                <div class="flex-1 truncate font-mono bg-gray-100 p-2 rounded" id="userWallet">bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq</div>
+                                <button class="ml-2 p-2 text-gray-500 hover:text-gray-700" disabled title="No se puede cambiar la wallet">
+                                    <i class="fas fa-lock"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Verificación en Dos Pasos</label>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-500">Añade una capa adicional de seguridad</p>
+                                </div>
+                                <button class="btc-bg-orange hover:bg-orange-600 text-black font-bold py-1 px-3 rounded text-sm">
+                                    Activar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-lg font-medium mb-4">Otras Configuraciones</h2>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Notificaciones por Email</label>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-500">Recibe notificaciones importantes por email</p>
+                                </div>
+                                <div class="relative inline-block w-10 mr-2 align-middle select-none">
+                                    <input type="checkbox" id="emailToggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                    <label for="emailToggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Notificaciones Push</label>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-500">Recibe notificaciones en tu dispositivo</p>
+                                </div>
+                                <div class="relative inline-block w-10 mr-2 align-middle select-none">
+                                    <input type="checkbox" id="pushToggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                    <label for="pushToggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-hidden');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.add('sidebar-hidden');
+        });
+
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', () => {
+            const wallet = localStorage.getItem('btcminet_wallet');
+            if(!wallet) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('userWallet').textContent = wallet;
+
+            // Load saved settings
+            loadSettings();
+
+            // Set up event listeners
+            document.getElementById('darkModeToggle').addEventListener('change', toggleDarkMode);
+            document.getElementById('languageSelect').addEventListener('change', changeLanguage);
+            document.getElementById('emailToggle').addEventListener('change', saveSettings);
+            document.getElementById('pushToggle').addEventListener('change', saveSettings);
+        });
+
+        // Load saved settings from localStorage
+        function loadSettings() {
+            const darkMode = localStorage.getItem('btcminet_darkMode') === 'true';
+            const language = localStorage.getItem('btcminet_language') || 'es';
+            const emailNotifications = localStorage.getItem('btcminet_emailNotifications') === 'true';
+            const pushNotifications = localStorage.getItem('btcminet_pushNotifications') === 'true';
+
+            document.getElementById('darkModeToggle').checked = darkMode;
+            document.getElementById('languageSelect').value = language;
+            document.getElementById('emailToggle').checked = emailNotifications;
+            document.getElementById('pushToggle').checked = pushNotifications;
+
+            if(darkMode) {
+                document.documentElement.classList.add('dark');
+                document.body.classList.add('bg-gray-900', 'text-white');
+                document.body.classList.remove('bg-gray-100', 'text-gray-900');
+            }
+        }
+
+        // Toggle dark mode
+        function toggleDarkMode() {
+            const darkModeEnabled = document.getElementById('darkModeToggle').checked;
+            localStorage.setItem('btcminet_darkMode', darkModeEnabled);
+
+            if(darkModeEnabled) {
+                document.documentElement.classList.add('dark');
+                document.body.classList.add('bg-gray-900', 'text-white');
+                document.body.classList.remove('bg-gray-100', 'text-gray-900');
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.body.classList.remove('bg-gray-900', 'text-white');
+                document.body.classList.add('bg-gray-100', 'text-gray-900');
+            }
+        }
+
+        // Change language
+        function changeLanguage() {
+            const language = document.getElementById('languageSelect').value;
+            localStorage.setItem('btcminet_language', language);
+            alert('Los cambios de idioma se aplicarán después de recargar la página');
+        }
+
+        // Save settings
+        function saveSettings() {
+            localStorage.setItem('btcminet_emailNotifications', document.getElementById('emailToggle').checked);
+            localStorage.setItem('btcminet_pushNotifications', document.getElementById('pushToggle').checked);
+        }
+    </script>
+</body>
+</html>
