@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas Frecuentes - BTCMINET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .btc-orange {
+            color: #f7931a;
+        }
+        .btc-bg-orange {
+            background-color: #f7931a;
+        }
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .sidebar-hidden {
+            transform: translateX(100%);
+        }
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .faq-question {
+            transition: all 0.2s ease;
+        }
+        .faq-question:hover {
+            background-color: #f7fafc;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .faq-answer.show {
+            max-height: 1000px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Mobile menu button -->
+        <button id="mobileMenuBtn" class="md:hidden fixed top-4 right-4 z-50 btc-bg-orange p-2 rounded-full">
+            <i class="fas fa-bars text-white"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar fixed md:relative inset-y-0 right-0 w-64 bg-black text-white p-4 md:transform-none sidebar-hidden md:block z-40">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-xl font-bold btc-orange">BTCMINET</h2>
+                <button id="closeSidebar" class="md:hidden">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <nav>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="dashboard.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="deposit.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-wallet mr-2"></i>
+                            <span>Depósito</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="withdraw.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-money-bill-wave mr-2"></i>
+                            <span>Retiro</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="contracts.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-file-contract mr-2"></i>
+                            <span>Contratos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="referrals.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-users mr-2"></i>
+                            <span>Referidos</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faucet.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-faucet mr-2"></i>
+                            <span>Faucet</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="faq.html" class="flex items-center p-2 rounded btc-bg-orange text-black">
+                            <i class="fas fa-question-circle mr-2"></i>
+                            <span>Preguntas Frecuentes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-cog mr-2"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="index.html" class="flex items-center p-2 rounded hover:bg-gray-800">
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            <span>Cerrar Sesión</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-1 overflow-auto">
+            <header class="bg-white shadow-sm">
+                <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                    <h1 class="text-2xl font-bold">Preguntas Frecuentes (FAQ)</h1>
+                </div>
+            </header>
+
+            <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <div class="px-4 py-6 sm:px-0">
+                    <div class="bg-white rounded-lg shadow">
+                        <!-- FAQ Item 1 -->
+                        <div class="faq-item">
+                            <div class="faq-question p-6 cursor-pointer flex justify-between items-center" onclick="toggleAnswer(1)">
+                                <h3 class="text-lg font-medium">¿Cómo funciona la plataforma de contratos de minería?</h3>
+                                <i class="fas fa-chevron-down transition-transform" id="icon1"></i>
+                            </div>
+                            <div class="faq-answer px-6 pb-6" id="answer1">
+                                <p class="text-gray-700">Nuestra plataforma permite a los usuarios comprar contratos de minería de diferentes valores (desde 1 USD hasta 50,000 USD). Los pagos de los contratos se realizan en USD, pero se convierten a BTC según el tipo de cambio actual. Los usuarios pueden ver su balance en BTC con 10 decimales de precisión, y este balance se actualiza según las inversiones realizadas y el retorno de la minería.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 2 -->
+                        <div class="faq-item">
+                            <div class="faq-question p-6 cursor-pointer flex justify-between items-center" onclick="toggleAnswer(2)">
+                                <h3 class="text-lg font-medium">¿Cómo puedo hacer un depósito en la plataforma?</h3>
+                                <i class="fas fa-chevron-down transition-transform" id="icon2"></i>
+                            </div>
+                            <div class="faq-answer px-6 pb-6" id="answer2">
+                                <p class="text-gray-700">Para hacer un depósito, solo necesitas transferir a la Wallet que se te asignó en la sección DEPOSITO. Tu deposito se reflejará en tu balance con precisión de hasta 10 decimales. El valor de BTC se ajusta en tiempo real según el tipo de cambio.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 3 -->
+                        <div class="faq-item">
+                            <div class="faq-question p-6 cursor-pointer flex justify-between items-center" onclick="toggleAnswer(3)">
+                                <h3 class="text-lg font-medium">¿Qué es el retorno de inversión (ROI) y cómo funciona?</h3>
+                                <i class="fas fa-chevron-down transition-transform" id="icon3"></i>
+                            </div>
+                            <div class="faq-answer px-6 pb-6" id="answer3">
+                                <p class="text-gray-700">El retorno de inversión (ROI) es el rendimiento que obtienes por tu inversión a lo largo del tiempo. En nuestra plataforma, el ROI está diseñado para generar ganancias durante un período de 100 días mas sin embargo los contratos nunca caducan son para toda la vida. El retorno aumenta tu balance de BTC de acuerdo con la minería y se refleja en el movimiento de los decimales de tu saldo. Esto significa que, a medida que pasa el tiempo, los ceros en tu balance cambiarán conforme al rendimiento de la inversión.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 4 -->
+                        <div class="faq-item">
+                            <div class="faq-question p-6 cursor-pointer flex justify-between items-center" onclick="toggleAnswer(4)">
+                                <h3 class="text-lg font-medium">¿Cuál es el monto mínimo de retiro?</h3>
+                                <i class="fas fa-chevron-down transition-transform" id="icon4"></i>
+                            </div>
+                            <div class="faq-answer px-6 pb-6" id="answer4">
+                                <p class="text-gray-700">El monto mínimo de retiro es de 0.0000004 BTC, lo que te permite retirar ganancias de manera flexible. Asegúrate de que tu balance sea mayor que el monto mínimo de retiro más la comisión de GAS antes de solicitar un retiro.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 5 -->
+                        <div class="faq-item">
+                            <div class="faq-question p-6 cursor-pointer flex justify-between items-center" onclick="toggleAnswer(5)">
+                                <h3 class="text-lg font-medium">¿Cuánto es la comisión de la plataforma por retiro?</h3>
+                                <i class="fas fa-chevron-down transition-transform" id="icon5"></i>
+                            </div>
+                            <div class="faq-answer px-6 pb-6" id="answer5">
+                                <p class="text-gray-700">Nuestra plataforma cobra una pequeña comisión de GAS sobre cada retiro, la cual cubre las comisiones de red y los costos operativos. La comisión se calcula automáticamente y se muestra antes de que confirmes tu retiro.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 6 -->
+                        <div class="faq-item">
+                            <div class="faq-question p-6 cursor-pointer flex justify-between items-center" onclick="toggleAnswer(6)">
+                                <h3 class="text-lg font-medium">¿Cómo puedo ver el progreso de mi inversión?</h3>
+                                <i class="fas fa-chevron-down transition-transform" id="icon6"></i>
+                            </div>
+                            <div class="faq-answer px-6 pb-6" id="answer6">
+                                <p class="text-gray-700">Puedes ver el progreso de tu inversión directamente en tu cuenta de usuario. El saldo de BTC se actualizará de acuerdo con el rendimiento de la minería y las ganancias generadas a lo largo del tiempo. Además, se reflejará el retorno de inversión en los próximos 100 días.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 7 -->
+                        <div class="faq-item">
+                            <div class="faq-question p-6 cursor-pointer flex justify-between items-center" onclick="toggleAnswer(7)">
+                                <h3 class="text-lg font-medium">¿Puedo retirar mis ganancias 24/7?</h3>
+                                <i class="fas fa-chevron-down transition-transform" id="icon7"></i>
+                            </div>
+                            <div class="faq-answer px-6 pb-6" id="answer7">
+                                <p class="text-gray-700">Por supuesto, también los contratos de minería nunca caducan. Sin embargo, puedes retirar cualquier ganancia acumulada en BTC en cualquier momento, siempre que cumplas con el monto mínimo de retiro y la comisión de GAS.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 8 -->
+                        <div class="faq-item">
+                            <div class="faq-question p-6 cursor-pointer flex justify-between items-center" onclick="toggleAnswer(8)">
+                                <h3 class="text-lg font-medium">¿Puedo cambiar mi wallet de retiro?</h3>
+                                <i class="fas fa-chevron-down transition-transform" id="icon8"></i>
+                            </div>
+                            <div class="faq-answer px-6 pb-6" id="answer8">
+                                <p class="text-gray-700">No, una vez que te registres en la plataforma, no podrás cambiar la wallet de retiro. Los retiros solo se pueden hacer a la wallet con la que te registraste.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 9 -->
+                        <div class="faq-item">
+                            <div class="faq-question p-6 cursor-pointer flex justify-between items-center" onclick="toggleAnswer(9)">
+                                <h3 class="text-lg font-medium">¿Cómo se convierte el USD a BTC?</h3>
+                                <i class="fas fa-chevron-down transition-transform" id="icon9"></i>
+                            </div>
+                            <div class="faq-answer px-6 pb-6" id="answer9">
+                                <p class="text-gray-700">El valor de USD a BTC se convierte en tiempo real según el tipo de cambio actual del mercado de criptomonedas. Esto significa que la equivalencia de USD a BTC variará ligeramente según el mercado, y siempre reflejamos el valor más actualizado para tu depósito o compra de contrato.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 10 -->
+                        <div class="faq-item">
+                            <div class="faq-question p-6 cursor-pointer flex justify-between items-center" onclick="toggleAnswer(10)">
+                                <h3 class="text-lg font-medium">¿Puedo comprar varios contratos a la vez?</h3>
+                                <i class="fas fa-chevron-down transition-transform" id="icon10"></i>
+                            </div>
+                            <div class="faq-answer px-6 pb-6" id="answer10">
+                                <p class="text-gray-700">Sí, puedes comprar varios contratos de minería a la vez, y cada uno se añadirá a tu saldo total en BTC. Cada contrato tiene su propio retorno de inversión, y los saldos se actualizan conforme se vayan generando las ganancias.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 11 -->
+                        <div class="faq-item">
+                            <div class="faq-question p-6 cursor-pointer flex justify-between items-center" onclick="toggleAnswer(11)">
+                                <h3 class="text-lg font-medium">¿Puedo transferir mis BTC a otra wallet?</h3>
+                                <i class="fas fa-chevron-down transition-transform" id="icon11"></i>
+                            </div>
+                            <div class="faq-answer px-6 pb-6" id="answer11">
+                                <p class="text-gray-700">No. Solo puedes retirar tus BTC a la wallet con la que te registraste. Además, debes asegurarte de que tu balance sea mayor al monto mínimo de retiro y al GAS antes de solicitar un retiro.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('sidebar-hidden');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.add('sidebar-hidden');
+        });
+
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', () => {
+            const wallet = localStorage.getItem('btcminet_wallet');
+            if(!wallet) {
+                window.location.href = 'index.html';
+                return;
+            }
+        });
+
+        // Toggle FAQ answers
+        function toggleAnswer(id) {
+            const answer = document.getElementById(`answer${id}`);
+            const icon = document.getElementById(`icon${id}`);
+            
+            answer.classList.toggle('show');
+            icon.classList.toggle('transform');
+            icon.classList.toggle('rotate-180');
+        }
+    </script>
+</body>
+</html>
